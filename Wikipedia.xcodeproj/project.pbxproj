@@ -390,6 +390,8 @@
 		83B87EC41F71314D00F342F1 /* RecentSearchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B87EC01F71314D00F342F1 /* RecentSearchesViewController.swift */; };
 		83B87EC51F71314D00F342F1 /* RecentSearchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B87EC01F71314D00F342F1 /* RecentSearchesViewController.swift */; };
 		83B87ECC1F71431F00F342F1 /* ArticleCollectionViewCell+ListDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B87EC61F713BC200F342F1 /* ArticleCollectionViewCell+ListDisplay.swift */; };
+		83BE2D9220BD5878005E98F0 /* MapKitHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BE2D9120BD5878005E98F0 /* MapKitHelpers.swift */; };
+		83BE2D9420BD5B31005E98F0 /* UIKitHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BE2D9320BD5B31005E98F0 /* UIKitHelpers.swift */; };
 		83BF87D01FA7463300EAF3DD /* WMFFIFOCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 83BF87CE1FA7463300EAF3DD /* WMFFIFOCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		83BF87D11FA7463300EAF3DD /* WMFFIFOCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BF87CF1FA7463300EAF3DD /* WMFFIFOCache.m */; };
 		83CCB289209CA4E600D31565 /* NSRegularExpression+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = 83CCB287209CA4E600D31565 /* NSRegularExpression+HTML.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3320,6 +3322,8 @@
 		8392E8671F557FC0007E2EE2 /* NSTextAttachment+WMFExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextAttachment+WMFExtras.swift"; sourceTree = "<group>"; };
 		83B87EC01F71314D00F342F1 /* RecentSearchesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewController.swift; sourceTree = "<group>"; };
 		83B87EC61F713BC200F342F1 /* ArticleCollectionViewCell+ListDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArticleCollectionViewCell+ListDisplay.swift"; sourceTree = "<group>"; };
+		83BE2D9120BD5878005E98F0 /* MapKitHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitHelpers.swift; sourceTree = "<group>"; };
+		83BE2D9320BD5B31005E98F0 /* UIKitHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitHelpers.swift; sourceTree = "<group>"; };
 		83BF87CE1FA7463300EAF3DD /* WMFFIFOCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMFFIFOCache.h; sourceTree = "<group>"; };
 		83BF87CF1FA7463300EAF3DD /* WMFFIFOCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMFFIFOCache.m; sourceTree = "<group>"; };
 		83CCB287209CA4E600D31565 /* NSRegularExpression+HTML.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSRegularExpression+HTML.h"; sourceTree = "<group>"; };
@@ -7950,6 +7954,7 @@
 				D82117F91EE587650076C040 /* Mapbox+Extensions.swift */,
 				D8703DCE1EE8B27A001A4BAB /* mapstyle.json */,
 				D87233FF1E1FF0A500751E83 /* PlacesViewController.swift */,
+				83BE2D9120BD5878005E98F0 /* MapKitHelpers.swift */,
 				D88C70171EE595E90022A26A /* MapView.swift */,
 				D82117FB1EE58C080076C040 /* MapAnnotation.swift */,
 				D88FCAE01E4B776600505A9F /* MapUtilities.swift */,
@@ -7967,6 +7972,7 @@
 				B3D889431E9E8F8400F08F53 /* PlaceSearchFilterListController.swift */,
 				B34B0ED81E9EBD0400716D75 /* TouchOutsideOverlayView.swift */,
 				B3F21D0E1EB0EBB4000ED0BB /* PlaceSearchService.swift */,
+				83BE2D9320BD5B31005E98F0 /* UIKitHelpers.swift */,
 			);
 			name = Places;
 			sourceTree = "<group>";
@@ -10165,6 +10171,7 @@
 				B0E805561C0CE0DC0065EBC0 /* UIView+RemoveConstraints.m in Sources */,
 				B08624341F72EA1A00B770FD /* WMFWelcomeAnimationBackgroundView.swift in Sources */,
 				B0E806F91C0CEBC70065EBC0 /* SectionEditorViewController.m in Sources */,
+				83BE2D9220BD5878005E98F0 /* MapKitHelpers.swift in Sources */,
 				B0E805551C0CE0DC0065EBC0 /* UIView+IBExtras.swift in Sources */,
 				D818D3861ED750E40076110D /* ArticleCollectionViewController.swift in Sources */,
 				B0E805961C0CE2C60065EBC0 /* WMFHamburgerMenuFunnel.m in Sources */,
@@ -10248,6 +10255,7 @@
 				B0E8037F1C0CD9EE0065EBC0 /* MWKSection+TOCItem.swift in Sources */,
 				B09B03F21CE0FB6300009083 /* PageHistoryFetcher.swift in Sources */,
 				B0E8065B1C0CE84B0065EBC0 /* WikiTextSectionFetcher.m in Sources */,
+				83BE2D9420BD5B31005E98F0 /* UIKitHelpers.swift in Sources */,
 				B0E8058D1C0CE2C60065EBC0 /* CreateAccountFunnel.m in Sources */,
 				83927D811F705B7B00051890 /* SearchResultsViewController.swift in Sources */,
 				B0E8059D1C0CE2F50065EBC0 /* WMFShareFunnel.m in Sources */,
