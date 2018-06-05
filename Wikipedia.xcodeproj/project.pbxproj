@@ -313,6 +313,7 @@
 		8304D7C31F60131900A0CDD6 /* WMFWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8304D7BF1F60131900A0CDD6 /* WMFWebView.m */; };
 		8304D7C41F60131900A0CDD6 /* WMFWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8304D7BF1F60131900A0CDD6 /* WMFWebView.m */; };
 		830A88F320C69D89007F5F75 /* SuggestionsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830A88F220C69D89007F5F75 /* SuggestionsFetcher.swift */; };
+		830A88F520C6BBCB007F5F75 /* PlacesSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830A88F420C6BBCB007F5F75 /* PlacesSearchViewController.swift */; };
 		830D71C31F703C980080078B /* ArticleURLListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D71C21F703C980080078B /* ArticleURLListViewController.swift */; };
 		830D71C41F703C980080078B /* ArticleURLListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D71C21F703C980080078B /* ArticleURLListViewController.swift */; };
 		830D71C51F703C980080078B /* ArticleURLListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D71C21F703C980080078B /* ArticleURLListViewController.swift */; };
@@ -3304,6 +3305,7 @@
 		8304D7BE1F60131900A0CDD6 /* WMFWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMFWebView.h; sourceTree = "<group>"; };
 		8304D7BF1F60131900A0CDD6 /* WMFWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMFWebView.m; sourceTree = "<group>"; };
 		830A88F220C69D89007F5F75 /* SuggestionsFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsFetcher.swift; sourceTree = "<group>"; };
+		830A88F420C6BBCB007F5F75 /* PlacesSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesSearchViewController.swift; sourceTree = "<group>"; };
 		830D71C21F703C980080078B /* ArticleURLListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleURLListViewController.swift; sourceTree = "<group>"; };
 		830D71CE1F704DD40080078B /* ArticleFetchedResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleFetchedResultsViewController.swift; sourceTree = "<group>"; };
 		830ECACE1FBDD8C00080B1EF /* ReadingListsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingListsViewController.swift; sourceTree = "<group>"; };
@@ -7979,6 +7981,7 @@
 				83BE2D9320BD5B31005E98F0 /* UIKitHelpers.swift */,
 				83BE2D9720BD7F28005E98F0 /* SearchHistory.swift */,
 				830A88F220C69D89007F5F75 /* SuggestionsFetcher.swift */,
+				830A88F420C6BBCB007F5F75 /* PlacesSearchViewController.swift */,
 			);
 			name = Places;
 			sourceTree = "<group>";
@@ -10186,6 +10189,7 @@
 				D8421B53203CC8420040F50B /* DebugReadingListsViewController.swift in Sources */,
 				0EF2249A1CC5536200FDF78E /* WMFLanguageCell.m in Sources */,
 				B0E803381C0CD7550065EBC0 /* WMFSearchButton.m in Sources */,
+				830A88F520C6BBCB007F5F75 /* PlacesSearchViewController.swift in Sources */,
 				7A6ED50D20ADBF950001849F /* SessionsFunnel.swift in Sources */,
 				B031032D1F677BEC00E2FCF6 /* WMFWelcomeExplorationViewController.swift in Sources */,
 				D8703DBF1EE84533001A4BAB /* PreviewingViewController.swift in Sources */,
