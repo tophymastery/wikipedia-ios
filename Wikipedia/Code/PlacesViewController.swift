@@ -11,7 +11,7 @@ var siteURL: URL {
 }
 
 @objc(WMFPlacesViewController)
-class PlacesViewController: PreviewingViewController, UISearchBarDelegate, ArticlePopoverViewControllerDelegate, WMFLocationManagerDelegate, NSFetchedResultsControllerDelegate, UIPopoverPresentationControllerDelegate, ArticlePlaceViewDelegate, AnalyticsViewNameProviding, UIGestureRecognizerDelegate, TouchOutsideOverlayDelegate, PlaceSearchFilterListDelegate {
+class PlacesViewController: PreviewingViewController, UISearchBarDelegate, ArticlePopoverViewControllerDelegate, WMFLocationManagerDelegate, NSFetchedResultsControllerDelegate, UIPopoverPresentationControllerDelegate, ArticlePlaceViewDelegate, AnalyticsViewNameProviding, TouchOutsideOverlayDelegate, PlaceSearchFilterListDelegate {
 
     fileprivate var mapView: MapView!
     @IBOutlet weak var navigationBar: NavigationBar!
@@ -35,12 +35,7 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
     @IBOutlet weak var closeSearchButton: UIButton!
     @IBOutlet weak var searchBarToMapListToggleTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchBarToCloseTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var listAndSearchOverlayContainerView: RoundedCornerView!
-    @IBOutlet weak var listAndSearchOverlaySliderSeparator: UIView!
-    @IBOutlet weak var listAndSearchOverlayBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var listAndSearchOverlayHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var listAndSearchOverlaySliderHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var listAndSearchOverlaySliderView: UIView!
+    @IBOutlet weak var listAndSearchOverlayContainerView: OverlayView!
     var searchViewController: PlacesSearchViewController!
     
     @available(*, deprecated) var listAndSearchOverlayFilterSelectorContainerView: UIView! {
@@ -215,8 +210,6 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
         recenterOnUserLocationButton.accessibilityLabel = WMFLocalizedString("places-accessibility-recenter-map-on-user-location", value:"Recenter on your location", comment:"Accessibility label for the recenter map on the user's location button")
         recenterOnUserLocationButton.imageEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: 0, right: 1)
 
-        listAndSearchOverlayContainerView.corners = [.topLeft, .topRight, .bottomLeft, .bottomRight]
-        
 
         // Setup search bars
         let searchPlaceholder = WMFLocalizedString("places-search-default-text", value:"Search Places", comment:"Placeholder text that displays where is there no current place search\n{{Identical|Search}}")
@@ -237,6 +230,8 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
         } else {
             viewMode = .map
         }
+        
+        listAndSearchOverlayContainerView.delegate = self
         
         apply(theme: theme)
         self.view.layoutIfNeeded()
@@ -861,8 +856,6 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
         case searchOverlay
     }
     
-    fileprivate var overlaySliderPanGestureRecognizer: UIPanGestureRecognizer?
-    
     func addSearchBarToNavigationBar(animated: Bool) {
         guard viewIfLoaded != nil else {
             return
@@ -883,9 +876,7 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
         titleView.wmf_addConstraintsToEdgesOfView(filterSelectorView, withInsets: UIEdgeInsets(top: 0, left: searchBarLeadingPadding, bottom: 0, right: searchBarTrailingPadding), priority: .defaultHigh)
         navigationItem.titleView = titleView
         
-        if let panGR = overlaySliderPanGestureRecognizer {
-            view.removeGestureRecognizer(panGR)
-        }
+        listAndSearchOverlayContainerView.isResizable = false
     }
     
     func removeSearchBarFromNavigationBar(animated: Bool) {
@@ -894,116 +885,11 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
         listAndSearchOverlayFilterSelectorContainerView.wmf_addSubviewWithConstraintsToEdges(filterSelectorView)
         
         searchBar = listAndSearchOverlaySearchBar
-        
-        let panGR = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
-        panGR.delegate = self
-        view.addGestureRecognizer(panGR)
-        overlaySliderPanGestureRecognizer = panGR
-    }
-    
-    var initialOverlayHeightForPan: CGFloat?
-    
-    let overlayMidHeight: CGFloat = 388
-    var overlayMinHeight: CGFloat {
-        get {
-            return listAndSearchOverlayFilterSelectorContainerHeightConstraint.constant + listAndSearchOverlaySearchHeightConstraint.constant + listAndSearchOverlaySliderHeightConstraint.constant
-        }
-    }
-    var overlayMaxHeight: CGFloat {
-        get {
-            return view.bounds.size.height - listAndSearchOverlayContainerView.frame.minY - listAndSearchOverlayBottomConstraint.constant
-        }
-    }
 
-    enum OverlayState {
-        case min
-        case mid
-        case max
+        listAndSearchOverlayContainerView.isResizable = true
     }
     
-    func set(overlayState: OverlayState, withVelocity velocity: CGFloat, animated: Bool) {
-        let currentHeight = listAndSearchOverlayHeightConstraint.constant
-        let newHeight: CGFloat
-        switch overlayState {
-        case .min:
-            newHeight = overlayMinHeight
-        case .max:
-            newHeight = overlayMaxHeight
-        default:
-            newHeight = overlayMidHeight
-        }
-        let springVelocity = velocity / (newHeight - currentHeight)
-        self.view.layoutIfNeeded()
-        let animations = {
-            self.listAndSearchOverlayHeightConstraint.constant = newHeight
-            self.view.layoutIfNeeded()
-        }
-        let duration: TimeInterval = 0.5
-        self.overlayState = overlayState
-        UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: springVelocity, options: [.allowUserInteraction], animations: animations, completion: { (didFinish) in
-            if overlayState == .max {
-                self.listAndSearchOverlayHeightConstraint.isActive = false
-                self.listAndSearchOverlayBottomConstraint.isActive = true
-            } else {
-                self.listAndSearchOverlayHeightConstraint.isActive = true
-                self.listAndSearchOverlayBottomConstraint.isActive = false
-            }
-        })
-    }
-    
-    var overlayState = OverlayState.mid
-    
-    
-    @objc func handlePanGesture(_ panGR: UIPanGestureRecognizer) {
-        let minHeight = overlayMinHeight
-        let maxHeight = overlayMaxHeight
-        let midHeight = overlayMidHeight
-        switch panGR.state {
-        case .possible:
-            fallthrough
-        case .began:
-            fallthrough
-        case .changed:
-            let initialHeight: CGFloat
-            if let height = initialOverlayHeightForPan {
-                initialHeight = height
-            } else {
-                if (overlayState == .max) {
-                    listAndSearchOverlayHeightConstraint.constant = listAndSearchOverlayContainerView.frame.height
-                }
-                initialHeight = listAndSearchOverlayHeightConstraint.constant
-                initialOverlayHeightForPan = initialHeight
-                listAndSearchOverlayHeightConstraint.isActive = true
-                listAndSearchOverlayBottomConstraint.isActive = false
-            }
-            listAndSearchOverlayHeightConstraint.constant = max(minHeight, initialHeight + panGR.translation(in: view).y)
-        case .ended:
-            fallthrough
-        case .failed:
-            fallthrough
-        case .cancelled:
-            let currentHeight = listAndSearchOverlayHeightConstraint.constant
-            let newState: OverlayState
-            if currentHeight <= midHeight {
-                let min: Bool = currentHeight - minHeight <= midHeight - currentHeight
-                if min {
-                    newState = .min
-                } else {
-                    newState = .mid
-                }
-            } else {
-                let mid: Bool = currentHeight - midHeight <= maxHeight - currentHeight
-                if mid {
-                    newState = .mid
-                } else {
-                    newState = .max
-                }
-            }
-            set(overlayState: newState, withVelocity: panGR.velocity(in: view).y, animated: true)
-            initialOverlayHeightForPan = nil
-            break
-        }
-    }
+    var overlayState: OverlayState { return listAndSearchOverlayContainerView.overlayState }
     
     var isSearchBarInNavigationBar: Bool? {
         didSet{
@@ -1105,7 +991,7 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
                 filterSelectorView.button.isEnabled = true
             case .searchOverlay:
                 if overlayState == .min {
-                    set(overlayState: .mid, withVelocity: 0, animated: true)
+                    listAndSearchOverlayContainerView.set(overlayState: .mid, withVelocity: 0, animated: true)
                 }
                 isOverlaySearchButtonHidden = false
                 isSearchBarInNavigationBar = false
@@ -2088,18 +1974,6 @@ class PlacesViewController: PreviewingViewController, UISearchBarDelegate, Artic
         return "Places"
     }
     
-    // MARK: - UIGestureRecognizerDelegate
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        guard gestureRecognizer === overlaySliderPanGestureRecognizer else {
-            return false
-        }
-        
-        let location = touch.location(in: view)
-        let shouldReceive = location.x < listAndSearchOverlayContainerView.frame.maxX && abs(location.y - listAndSearchOverlayContainerView.frame.maxY - 10) < 32
-        return shouldReceive
-    }
-    
     // MARK: - TouchOutsideOverlayDelegate
     
     func touchOutside(_ overlayView: TouchOutsideOverlayView) {
@@ -2411,12 +2285,6 @@ extension PlacesViewController: Themeable {
         searchFilterListController.apply(theme: theme)
         searchSuggestionController.apply(theme: theme)
         
-        listAndSearchOverlayContainerView.backgroundColor = theme.colors.chromeBackground
-        listAndSearchOverlaySliderView.backgroundColor = theme.colors.chromeBackground
-        listAndSearchOverlaySliderView.tintColor = theme.colors.secondaryText
-        
-        listAndSearchOverlaySliderSeparator.backgroundColor = theme.colors.midBackground
-        
         recenterOnUserLocationButton.backgroundColor = theme.colors.chromeBackground
         selectedArticlePopover?.apply(theme: theme)
         redoSearchButton.backgroundColor = theme.colors.link
@@ -2424,6 +2292,7 @@ extension PlacesViewController: Themeable {
         updateSearchFilterTitle()
         listViewController.apply(theme: theme)
         searchViewController.apply(theme: theme)
+        listAndSearchOverlayContainerView.apply(theme: theme)
     }
 }
 
@@ -2435,5 +2304,11 @@ extension PlacesViewController: PlacesSearchViewControllerDelegate {
     func placesSearchViewController(_ vc: PlacesSearchViewController, didSelect search: PlaceSearch) {
         searchBar?.endEditing(true)
         currentSearch = search
+    }
+}
+
+extension PlacesViewController: OverlayViewDelegate {
+    var overlayMinHeight: CGFloat {
+        return listAndSearchOverlayFilterSelectorContainerHeightConstraint.constant + listAndSearchOverlaySearchHeightConstraint.constant
     }
 }
