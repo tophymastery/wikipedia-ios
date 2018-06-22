@@ -139,35 +139,7 @@ final class PlacesSearchViewController: UIViewController {
     func hideEmptySearchOverlay() {
         emptySearchOverlayView.removeFromSuperview()
     }
-}
 
-extension PlacesSearchViewController: Themeable {
-    func apply(theme: Theme) {
-        guard viewIfLoaded != nil else {
-            return
-        }
-        view.backgroundColor = theme.colors.baseBackground
-        
-        listAndSearchOverlaySearchBar.backgroundColor = theme.colors.chromeBackground
-        listAndSearchOverlaySearchBar.barTintColor = theme.colors.chromeBackground
-        listAndSearchOverlaySearchBar.isTranslucent = false
-        listAndSearchOverlaySearchBar.wmf_enumerateSubviewTextFields{ (textField) in
-            textField.textColor = theme.colors.primaryText
-            textField.keyboardAppearance = theme.keyboardAppearance
-            textField.font = UIFont.systemFont(ofSize: 14)
-        }
-        listAndSearchOverlaySearchBar.setSearchFieldBackgroundImage(theme.searchBarBackgroundImage, for: .normal)
-        listAndSearchOverlaySearchBar.searchTextPositionAdjustment = UIOffset(horizontal: 7, vertical: 0)
-
-        listAndSearchOverlaySearchContainerView.backgroundColor = theme.colors.chromeBackground
-        listAndSearchOverlayFilterSelectorContainerView.backgroundColor = theme.colors.chromeBackground
-        listAndSearchOverlaySearchSeparator.backgroundColor = theme.colors.midBackground
-        
-        emptySearchOverlayView.backgroundColor = theme.colors.midBackground
-        emptySearchOverlayView.mainLabel.textColor = theme.colors.primaryText
-        emptySearchOverlayView.detailLabel.textColor = theme.colors.secondaryText
-    }
-    
     func setupEmptySearchOverlayView() {
         emptySearchOverlayView.mainLabel.text = WMFLocalizedString("places-empty-search-title", value:"Search for Wikipedia articles with geographic locations", comment:"Title text shown on an overlay when there are no recent Places searches. Describes that you can search Wikipedia for articles with geographic locations.")
         emptySearchOverlayView.detailLabel.text = WMFLocalizedString("places-empty-search-description", value:"Explore cities, countries, continents, natural landmarks, historical events, buildings and more.", comment:"Detail text shown on an overlay when there are no recent Places searches. Describes the kind of articles you can search for.")
@@ -204,8 +176,34 @@ extension PlacesSearchViewController: Themeable {
         
         self.view.setNeedsLayout()
     }
-    
+}
 
+extension PlacesSearchViewController: Themeable {
+    func apply(theme: Theme) {
+        guard viewIfLoaded != nil else {
+            return
+        }
+        view.backgroundColor = theme.colors.baseBackground
+        
+        listAndSearchOverlaySearchBar.backgroundColor = theme.colors.chromeBackground
+        listAndSearchOverlaySearchBar.barTintColor = theme.colors.chromeBackground
+        listAndSearchOverlaySearchBar.isTranslucent = false
+        listAndSearchOverlaySearchBar.wmf_enumerateSubviewTextFields{ (textField) in
+            textField.textColor = theme.colors.primaryText
+            textField.keyboardAppearance = theme.keyboardAppearance
+            textField.font = UIFont.systemFont(ofSize: 14)
+        }
+        listAndSearchOverlaySearchBar.setSearchFieldBackgroundImage(theme.searchBarBackgroundImage, for: .normal)
+        listAndSearchOverlaySearchBar.searchTextPositionAdjustment = UIOffset(horizontal: 7, vertical: 0)
+
+        listAndSearchOverlaySearchContainerView.backgroundColor = theme.colors.chromeBackground
+        listAndSearchOverlayFilterSelectorContainerView.backgroundColor = theme.colors.chromeBackground
+        listAndSearchOverlaySearchSeparator.backgroundColor = theme.colors.midBackground
+        
+        emptySearchOverlayView.backgroundColor = theme.colors.midBackground
+        emptySearchOverlayView.mainLabel.textColor = theme.colors.primaryText
+        emptySearchOverlayView.detailLabel.textColor = theme.colors.secondaryText
+    }
 }
 
 // MARK: - PlaceSearchSuggestionControllerDelegate
